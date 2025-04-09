@@ -1,1 +1,1 @@
-# Clase 1
+# Proyecto de sistemas distribuidos
