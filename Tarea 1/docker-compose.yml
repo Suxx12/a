@@ -1,0 +1,5 @@
+
+
+services: 
+  scrapper:
+    build: ./scrapper #Esto entra a la carpeta scrapper y buildea el Dockerfile que esta adentro
