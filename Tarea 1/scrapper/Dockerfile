@@ -1,5 +1,5 @@
 #Trae la imagen de python de docker hub
-FROM python:3.13-alpine
+FROM python:3.13
 
 #Setea el directorio de trabajo, crea la carpeta app y dice que aqui se va a trabajar
 WORKDIR /app
@@ -14,6 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 #Ejecuta el script del scrapper
-CMD [ "python", "./scrapper" ]
+CMD [ "python", "scrapper.py" ]
+#CMD ["ls"]
 
 #No es necesario exponer ningun puerto ya que no se va a acceder al scrapper desde afuera
