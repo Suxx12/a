@@ -4,12 +4,10 @@ services:
     container_name: waze-scrapper
     volumes:
       - ./m1_scrapper/jsons:/app/jsons   # Esto mapea la carpeta datos del host a la carpeta /app/jsons dentro del contenedor
-    #networks:
-     # - app-network
     depends_on:
-      - mongo
+      - mongo # Se usa el nombre del servicio
 
-  mongo:
+  mongo: #Servidor de base de datos
     image: mongo:latest
     container_name: mongodb
     ports:
@@ -18,9 +16,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin123
     volumes:
-      - mongo_data:/data/db
-    #networks:
-     # - app-network
+      - mongo_data:/data/db # Volumen gestionado por docker =! carpeta en local mapeada
 
   mongo-express:
     image: mongo-express:latest
@@ -33,9 +29,12 @@ services:
       ME_CONFIG_BASICAUTH: "false"
       ME_CONFIG_MONGODB_SERVER: mongo
     depends_on:
-      - mongo
-    #networks:
-     # - app-network
+      - mongo # Se usa el nombre del servicio
+
+#Aca no es necesario definir una red comun para todos los contenedores
+#porque con docker compose esta red se crea de forma automatica "directorio_default"
+
+#
 
 #networks:
  # app-network:
@@ -43,3 +42,4 @@ services:
 
 volumes:
   mongo_data:
+    

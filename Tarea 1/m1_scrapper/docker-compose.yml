@@ -1,0 +1,14 @@
+services: 
+  scrapper:
+    build: .   # Esto entra a la carpeta scrapper y buildea el Dockerfile que esta adentro
+    container_name: waze-scrapper
+    volumes:
+      - ./jsons:/app/jsons   # Esto mapea la carpeta datos del host a la carpeta /app/jsons dentro del contenedor
+    networks:
+      - app-network
+    #depends_on:
+     # - mongo # Se usa el nombre del servicio
+
+networks:
+  app-network:
+    external: true
