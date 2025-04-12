@@ -4,8 +4,8 @@ services:
     container_name: waze-scrapper
     volumes:
       - ./m1_scrapper/jsons:/app/jsons   # Esto mapea la carpeta datos del host a la carpeta /app/jsons dentro del contenedor
-    networks:
-      - app-network
+    #networks:
+     # - app-network
     depends_on:
       - mongo
 
@@ -19,8 +19,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: admin123
     volumes:
       - mongo_data:/data/db
-    networks:
-      - app-network
+    #networks:
+     # - app-network
 
   mongo-express:
     image: mongo-express:latest
@@ -34,12 +34,12 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongo
     depends_on:
       - mongo
-    networks:
-      - app-network
+    #networks:
+     # - app-network
 
-networks:
-  app-network:
-    driver: bridge
+#networks:
+ # app-network:
+  #  driver: bridge
 
 volumes:
   mongo_data:
