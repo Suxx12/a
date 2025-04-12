@@ -1,7 +1,7 @@
 services: 
   scrapper:
     build: ./m1_scrapper   # Esto entra a la carpeta scrapper y buildea el Dockerfile que esta adentro
-    container_name: waze-scrapper
+    container_name: waze-scrapper-general
     volumes:
       - ./m1_scrapper/jsons:/app/jsons   # Esto mapea la carpeta datos del host a la carpeta /app/jsons dentro del contenedor
     depends_on:
@@ -9,7 +9,7 @@ services:
 
   mongo: #Servidor de base de datos
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongodb-general
     ports:
       - "27017:27017"
     environment:
@@ -20,7 +20,7 @@ services:
 
   mongo-express:
     image: mongo-express:latest
-    container_name: mongo-express
+    container_name: mongo-express-general
     ports:
       - "8081:8081"
     environment:

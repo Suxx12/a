@@ -164,6 +164,17 @@ if __name__ == "__main__":
         db = client['trafico_rm']  # Nombre de la base de datos
         alertas_collection = db['alertas']
         atascos_collection = db['atascos']
+        # Crear índices únicos en el campo 'uuid' si no existen
+        alertas_collection.create_index(
+            [("uuid", 1)],  # Índice en la columna 'uuid'
+            unique=True,
+            name="unique_alert_uuid"
+        )
+        atascos_collection.create_index(
+            [("uuid", 1)],  # Índice en la columna 'uuid'
+            unique=True,
+            name="unique_jam_uuid"
+        )
         print("Conexión establecida con MongoDB")
     except Exception as e:
         print(f"Error al conectar con MongoDB: {e}")
@@ -239,11 +250,21 @@ if __name__ == "__main__":
                 # Insertar alertas en MongoDB
                 if alertas_para_mongodb:
                     try:
-                        resultado_insert = alertas_collection.insert_many(alertas_para_mongodb)
+                        resultado_insert = alertas_collection.insert_many(alertas_para_mongodb, ordered=False) #Ordered=False ignora los duplicados, inserta los buenos. Sino, no se inserta nignuno
                         total_alertas_mongodb += len(resultado_insert.inserted_ids)
-                        print(f"Se insertaron {len(resultado_insert.inserted_ids)} alertas en MongoDB")
+                        
+                        # Calcula duplicados
+                        duplicados = len(alertas_para_mongodb) - len(resultado_insert.inserted_ids)
+                        if duplicados > 0:
+                            print(f"Se insertaron {len(resultado_insert.inserted_ids)} alertas en MongoDB ({duplicados} duplicados ignorados)")
+                        else:
+                            print(f"Se insertaron {len(resultado_insert.inserted_ids)} alertas en MongoDB")
                     except Exception as e:
-                        print(f"Error al insertar alertas en MongoDB: {e}")
+                        # Capturar error de forma más elegante
+                        if "duplicate key error" in str(e):
+                            print(f"Error: Todas las alertas ya existían en la base de datos")
+                        else:
+                            print(f"Error al insertar alertas en MongoDB: {type(e).__name__}")
             else:
                 num_alertas = 0
             
@@ -263,11 +284,21 @@ if __name__ == "__main__":
                 # Insertar atascos en MongoDB
                 if atascos_para_mongodb:
                     try:
-                        resultado_insert = atascos_collection.insert_many(atascos_para_mongodb)
+                        resultado_insert = atascos_collection.insert_many(atascos_para_mongodb, ordered=False) #Ordered=False ignora los duplicados, inserta los buenos. Sino, no se inserta nignuno
                         total_atascos_mongodb += len(resultado_insert.inserted_ids)
-                        print(f"Se insertaron {len(resultado_insert.inserted_ids)} atascos en MongoDB")
+                        
+                        # Calcula duplicados
+                        duplicados = len(atascos_para_mongodb) - len(resultado_insert.inserted_ids)
+                        if duplicados > 0:
+                            print(f"Se insertaron {len(resultado_insert.inserted_ids)} atascos en MongoDB ({duplicados} duplicados ignorados)")
+                        else:
+                            print(f"Se insertaron {len(resultado_insert.inserted_ids)} atascos en MongoDB")
                     except Exception as e:
-                        print(f"Error al insertar atascos en MongoDB: {e}")
+                        # Capturar error de forma más elegante
+                        if "duplicate key error" in str(e):
+                            print(f"Error: Todos los atascos ya existían en la base de datos")
+                        else:
+                            print(f"Error al insertar atascos en MongoDB: {type(e).__name__}")
             else:
                 num_atascos = 0
             
