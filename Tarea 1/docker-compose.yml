@@ -30,6 +30,30 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongo
     depends_on:
       - mongo # Se usa el nombre del servicio
+  redis:
+    image: redis:6.0.7
+    container_name: redis_general
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_volume_data:/data
+
+  redis_insight:
+    image: redislabs/redisinsight:1.14.0
+    container_name: redis_insight_general
+    restart: always
+    ports:
+      - 8001:8001
+    volumes:
+      - redis_insight_volume_data:/db
+
+  python_app:
+    build: ./m3-cache/app
+    container_name: redis_python_app_general
+    restart: on-failure
+    depends_on:
+      - redis
 
 #Aca no es necesario definir una red comun para todos los contenedores
 #porque con docker compose esta red se crea de forma automatica "directorio_default"
@@ -42,4 +66,6 @@ services:
 
 volumes:
   mongo_data:
+  redis_volume_data:
+  redis_insight_volume_data:
     
