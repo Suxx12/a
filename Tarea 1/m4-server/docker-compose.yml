@@ -1,0 +1,19 @@
+
+services:
+  api_server:
+    build: .
+    container_name: api_server
+    restart: on-failure
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MONGO_URI=mongodb://admin:admin123@mongo:27017/
+      - MONGO_DB=trafico_rm
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    external: true  # Usará una red existente llamada 'app-network'

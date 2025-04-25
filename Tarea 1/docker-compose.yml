@@ -54,6 +54,22 @@ services:
     restart: on-failure
     depends_on:
       - redis
+  
+  api_server:
+    build: ./m4-server
+    container_name: api_server_general
+    depends_on:
+      - mongo
+      - redis
+      - redis_insight
+    restart: on-failure
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MONGO_URI=mongodb://admin:admin123@mongo:27017/
+      - MONGO_DB=trafico_rm
 
 #Aca no es necesario definir una red comun para todos los contenedores
 #porque con docker compose esta red se crea de forma automatica "directorio_default"
