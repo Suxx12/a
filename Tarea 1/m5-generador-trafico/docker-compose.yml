@@ -1,0 +1,13 @@
+services:
+  generador_trafico:
+    build: .
+    container_name: generador_trafico
+    networks:
+      - app-network
+    restart: unless-stopped
+    volumes:
+      - ./:/app 
+
+networks:
+  app-network:
+    external: true

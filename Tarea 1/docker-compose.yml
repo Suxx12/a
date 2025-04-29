@@ -71,6 +71,31 @@ services:
       - MONGO_URI=mongodb://admin:admin123@mongo:27017/
       - MONGO_DB=trafico_rm
 
+  # Servicio para cargar archivos JSON a MongoDB
+  json_loader:
+    build: ./m0_cargajson
+    container_name: json-loader-general
+    volumes:
+      - ./m0_cargajson/jsons:/app/jsons
+    environment:
+      - MONGODB_URI=mongodb://admin:admin123@mongo:27017/
+      - MONGODB_DB=trafico_rm
+      - MONGODB_COLECCION_ALERTAS=alertas
+      - MONGODB_COLECCION_ATASCOS=atascos
+    depends_on:
+      - mongo
+
+  generador_trafico:
+    build: ./m5-generador-trafico
+    container_name: generador_trafico_general
+    depends_on:
+      - mongo
+      - redis
+    volumes:
+      - ./m5-generador-trafico:/app
+    ports:
+      - "5050:5050"
+
 #Aca no es necesario definir una red comun para todos los contenedores
 #porque con docker compose esta red se crea de forma automatica "directorio_default"
 

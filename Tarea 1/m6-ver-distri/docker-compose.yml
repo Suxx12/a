@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  visualizador:
+    build: .
+    container_name: visualizador-distribucion
+    volumes:
+      - ./:/app/output
+    environment:
+      - DISPLAY=${DISPLAY}
+    command: >
+      bash -c "python visualizador_distribucion.py && 
+              cp distribucion_zipf_2.png /app/output/"
+
+volumes:
+  data:
