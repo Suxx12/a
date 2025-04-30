@@ -37,7 +37,10 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - redis_volume_data:/data
+      - ./m3-cache/redis.conf:/usr/local/etc/redis/redis.conf
+    command: [sh, -c, "rm -f /data/dump.rdb && redis-server /usr/local/etc/redis/redis.conf"] #Elimina persistencia lee archivo de configuracion para tamaño maximo y politica de remocion
+    #volumes:
+    #  - redis_volume_data:/data
 
   redis_insight:
     image: redislabs/redisinsight:1.14.0
@@ -45,15 +48,8 @@ services:
     restart: always
     ports:
       - 8001:8001
-    volumes:
-      - redis_insight_volume_data:/db
-
-  python_app:
-    build: ./m3-cache/app
-    container_name: redis_python_app_general
-    restart: on-failure
-    depends_on:
-      - redis
+    #volumes:
+    #  - redis_insight_volume_data:/db
   
   api_server:
     build: ./m4-server
@@ -85,16 +81,47 @@ services:
     depends_on:
       - mongo
 
-  generador_trafico:
-    build: ./m5-generador-trafico
-    container_name: generador_trafico_general
+  #generador_trafico_zipf_cache:
+   # build: ./m5-generador-trafico/ZipF
+    #container_name: generador_trafico_zipf_cache_general
+    #depends_on:
+     # - mongo
+      #- redis
+      #- api_server
+    #volumes:
+     # - ./m5-generador-trafico:/app
+
+  generador_trafico_normal_cache:
+    build: ./m5-generador-trafico/Normal
+    container_name: generador_trafico_normal_cache_general
     depends_on:
       - mongo
       - redis
+      - api_server
     volumes:
-      - ./m5-generador-trafico:/app
-    ports:
-      - "5050:5050"
+      - ./m5-generador-trafico/Normal:/app
+
+  #generador_trafico_zipf_cache:
+   # build: ./m5-generador-trafico/ZipF
+    #container_name: generador_trafico_zipf_cache_general
+    #depends_on:
+     # - mongo
+      #- redis
+      #- api_server
+    #volumes:
+     # - ./m5-generador-trafico:/app
+    
+  #generador_trafico_normal_sin_cache:
+   # build: ./m5-1-generador-trafico_mongo/Normal
+   # container_name: generador_trafico_normal_sin_cache_general
+   # depends_on:
+    #  - mongo
+     # - redis
+      #- api_server
+    #volumes:
+     # - ./m5-1-generador-trafico_mongo/Normal:/app
+  
+  
 
 #Aca no es necesario definir una red comun para todos los contenedores
 #porque con docker compose esta red se crea de forma automatica "directorio_default"
@@ -107,6 +134,6 @@ services:
 
 volumes:
   mongo_data:
-  redis_volume_data:
-  redis_insight_volume_data:
+  #redis_volume_data:
+  #redis_insight_volume_data:
     
