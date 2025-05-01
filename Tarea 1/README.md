@@ -59,9 +59,10 @@ docker compose up --build -d
 
 1. `m2_almacenamiento`
 2. `m3-cache`
-3. `m4-Scrapper`
-4. `M4-server`
-5. `m5-generador-trafico`
+3. `m0_cargajson`
+4. `m1_scrapper`
+5. `m4-server`
+6. `m5-generador-trafico (Normal o Zipf)` 
 
 
 Y finalmente los modulos de visualización de datos.
