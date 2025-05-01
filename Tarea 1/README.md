@@ -1,6 +1,6 @@
 # Proyecto de sistemas distribuidos
-Nombres: Renato Yañez, Camilo Rios
-Sección: 03
+Nombres: Renato Yañez, Camilo Rios \
+Sección: 03 \
 Profesor: Nicolás Hidalgo
 ## Levantamiento del Proyecto
 
