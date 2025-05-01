@@ -15,7 +15,10 @@ docker compose up --build -d
 ```
 
 >[!NOTE]
->Esto levantará el contenedor de redis con la politica de remocion LRU y 1MB de memoria máxima, además del contenedor del generador de tráfico utilizando la distribucion zipf para repeticion de consultas y poisson para las tasas de arribo. 
+>Esto levantará el contenedor de redis con la politica de remocion LRU y 1MB de memoria máxima, además del contenedor del generador de tráfico utilizando la distribucion zipf para repeticion de consultas y poisson para las tasas de arribo.
+
+>[!TIP]
+>Para cambiar la politica de remoción y el tamaño de la memoria se debe abrir el archivo `redis.conf` que se encuentra en la carpeta `m3-cache`. Para asignar LFU cambiar `lru` por `lfu`.
 
 ### Interfaces disponibles
 
