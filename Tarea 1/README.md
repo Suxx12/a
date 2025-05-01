@@ -13,6 +13,10 @@ Para iniciar el proyecto, desde el directorio `TAREA 1`, ejecuta el siguiente co
 ```bash
 docker compose up --build -d
 ```
+
+>[!NOTE]
+>Esto levantará el contenedor de redis con la politica de remocion LRU y 1MB de memoria máxima, además del contenedor del generador de tráfico utilizando la distribucion zipf para repeticion de consultas y poisson para las tasas de arribo. 
+
 ### Interfaces disponibles
 
 Una vez levantados los servicios, estarán disponibles las siguientes interfaces web:
