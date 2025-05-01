@@ -46,12 +46,12 @@ if not combined_uuids:
     exit(1)
 
 # Generar distribución Normal
-total_samples = 10  # Cantidad de elementos en la distribución final
+total_samples = 50000  # Cantidad de elementos en la distribución final
 n = len(combined_uuids)
 
 # Configurar la distribución normal
 mu = n / 2  # Media en el centro de la lista
-sigma = n / 5  # Ajustamos la desviación estándar para mejor distribución
+sigma = n / 3  # Ajustamos la desviación estándar para mejor distribución
 
 print(f"Usando: mu={mu}, sigma={sigma}")
 
@@ -88,10 +88,12 @@ total_requests = 0
 cache_hits = 0
 cache_misses = 0
 not_found = 0
-
+tiempos_cache = []
+tiempos_no_cache = []
 # Iniciar conteo de tiempo
 start_time = time.time()
-
+tiempo_cache = 0.000
+tiempo_no_cache = 0.000
 # Realizar las consultas a la API
 for item in normal_uuids:
     tipo = item["tipo"]
@@ -117,8 +119,12 @@ for item in normal_uuids:
         
         if data.get('resultado') == 'hit':
             cache_hits += 1
+            tiempos_cache.append(float(data.get('tiempo (ms)')))
+            tiempo_cache += float(data.get('tiempo (ms)'))
         elif data.get('resultado') == 'miss':
             cache_misses += 1
+            tiempos_no_cache.append(float(data.get('tiempo (ms)')))
+            tiempo_no_cache += float(data.get('tiempo (ms)'))
         elif data.get('resultado') == 'no_encontrado':
             not_found += 1
         
@@ -132,6 +138,10 @@ total_time = end_time - start_time
 # Calcular el hit rate
 hit_rate = (cache_hits / total_requests) * 100 if total_requests > 0 else 0
 
+#Calcular el tiempo promedio por consulta cache y no cache
+tiempo_promedio_cache = tiempo_cache / cache_hits if cache_hits > 0 else 0
+tiempo_promedio_no_cache = tiempo_no_cache / cache_misses if cache_misses > 0 else 0
+
 # Mostrar estadísticas
 print("\nResultados de las consultas:")
 print(f"Total de consultas: {total_requests}")
@@ -143,13 +153,18 @@ print(f"Tiempo total: {total_time:.2f} segundos")
 
 # Guardar los resultados en un archivo
 results = {
-    "total_requests": total_requests,
-    "cache_hits": cache_hits,
-    "cache_misses": cache_misses,
-    "not_found": not_found,
+    "total consultas": total_requests,
+    "cache hits": cache_hits,
+    "cache misses": cache_misses,
+    "no encontrados": not_found,
     "hit_rate": hit_rate,
-    "total_time_seconds": total_time,
-    "average_time_per_request": (total_time / total_requests) if total_requests > 0 else 0
+    "tiempo total ejecucion (s)": total_time,
+    "tiempo promedio cache (ms)": tiempo_promedio_cache,
+    "tiempo promedio almacenamiento (ms)": tiempo_promedio_no_cache,
+    "tiempos cache (ms)": tiempos_cache,
+    "tiempos almacenamiento (ms)": tiempos_no_cache,
+    "tiempo cache (ms)": tiempo_cache,
+    "tiempo total almacenamiento (ms)": tiempo_no_cache,
 }
 
 with open("/app/hit_rate_results.json", 'w') as f:
