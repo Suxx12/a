@@ -81,45 +81,25 @@ services:
     depends_on:
       - mongo
 
-  #generador_trafico_zipf_cache:
-   # build: ./m5-generador-trafico/ZipF
-    #container_name: generador_trafico_zipf_cache_general
+  #generador_trafico_normal_cache:
+  #  build: ./m5-generador-trafico/Normal
+   # container_name: generador_trafico_normal_cache_general
     #depends_on:
      # - mongo
       #- redis
       #- api_server
-    #volumes:
-     # - ./m5-generador-trafico:/app
+   # volumes:
+    #  - ./m5-generador-trafico/Normal:/app
 
-  generador_trafico_normal_cache:
-    build: ./m5-generador-trafico/Normal
-    container_name: generador_trafico_normal_cache_general
+  generador_trafico_zipf_cache:
+    build: ./m5-generador-trafico/ZipF
+    container_name: generador_trafico_zipf_cache_general
     depends_on:
       - mongo
       - redis
       - api_server
     volumes:
-      - ./m5-generador-trafico/Normal:/app
-
-  #generador_trafico_zipf_cache:
-   # build: ./m5-generador-trafico/ZipF
-    #container_name: generador_trafico_zipf_cache_general
-    #depends_on:
-     # - mongo
-      #- redis
-      #- api_server
-    #volumes:
-     # - ./m5-generador-trafico:/app
-    
-  #generador_trafico_normal_sin_cache:
-   # build: ./m5-1-generador-trafico_mongo/Normal
-   # container_name: generador_trafico_normal_sin_cache_general
-   # depends_on:
-    #  - mongo
-     # - redis
-      #- api_server
-    #volumes:
-     # - ./m5-1-generador-trafico_mongo/Normal:/app
+      - ./m5-generador-trafico:/app
   
   
 
