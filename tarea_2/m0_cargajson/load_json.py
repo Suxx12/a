@@ -151,7 +151,7 @@ def main():
         atascos_collection.create_index(
             [("uuid", 1)],  # Índice en la columna 'uuid'
             unique=True,
-            name="unique_jam_uuid"
+            name="unique_atasco_uuid"
         )
         print("Índices UUID creados/verificados en MongoDB")
     except Exception as e:

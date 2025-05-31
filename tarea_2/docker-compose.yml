@@ -101,7 +101,25 @@ services:
     volumes:
       - ./m5-generador-trafico:/app
   
-  
+  filtering:
+    build: ./m7-filtering
+    container_name: m7-filtering-general
+    volumes:
+      - ./m7-filtering/data:/app/data
+      - ./m7-filtering/results:/app/results
+    environment:
+      - MONGODB_URI=mongodb://admin:admin123@mongo:27017/
+      - MONGODB_DB=trafico_rm
+      - MONGODB_COLECCION_ALERTAS=alertas
+      - MONGODB_COLECCION_ATASCOS=atascos
+    depends_on:
+      json_loader:
+        condition: service_completed_successfully
+      scrapper:
+        condition: service_completed_successfully
+      mongo:
+        condition: service_started
+          
 
 #Aca no es necesario definir una red comun para todos los contenedores
 #porque con docker compose esta red se crea de forma automatica "directorio_default"
