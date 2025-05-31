@@ -13,17 +13,7 @@ python3 exportar_mongo.py
 echo "Paso 2: Procesando datos con Apache Pig..."
 pig -x local filtrar_data.pig
 
-# Paso 3: Verificar resultados
-echo "Paso 3: Verificando resultados..."
-if [ -d "/app/results/total_counts" ]; then
-    echo "Resultados generados correctamente:"
-    
-    echo "Conteos totales:"
-    cat /app/results/total_counts/part-* 2>/dev/null || echo "No se encontraron resultados"
-else
-    echo "Error: No se generaron los resultados esperados"
-    exit 1
-fi
+
 
 echo "=== Proceso completado exitosamente ==="
 

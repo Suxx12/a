@@ -21,8 +21,6 @@ atascos_total = FOREACH atascos_count GENERATE
 -- Unir los resultados
 resultados = UNION alertas_total, atascos_total;
 
--- Guardar resultados
-STORE resultados INTO '/app/results/total_counts' USING PigStorage(',');
 
 -- Mostrar los resultados en la consola
 DUMP resultados;
