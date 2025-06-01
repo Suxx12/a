@@ -3,11 +3,13 @@ import json
 import os
 import glob
 import sys
+import csv
 from datetime import datetime
 
 def procesar_alertas(archivo_entrada, archivo_salida):
     """
     Procesa un archivo JSON de alertas y extrae los campos específicos requeridos.
+    Guarda el resultado en formato CSV.
     """
     print(f"Procesando alertas en {archivo_entrada}...")
     
@@ -21,26 +23,37 @@ def procesar_alertas(archivo_entrada, archivo_salida):
                 if isinstance(datos, dict) and all(isinstance(datos.get(k), dict) for k in datos if isinstance(k, str)):
                     print(f"Formato detectado: diccionario de alertas. Procesando {len(datos)} registros...")
                     
-                    with open(archivo_salida, 'w') as f_out:
+                    # Definir los campos para el CSV (encabezados) - sin reportedBy ni subtype
+                    campos = [
+                        "uuid", "city", "municipalityUser", "type", 
+                        "street", "confidence", 
+                        "location_x", "location_y", "fecha"
+                    ]
+                    
+                    with open(archivo_salida, 'w', newline='') as f_out:
+                        # Crear escritor CSV
+                        writer = csv.DictWriter(f_out, fieldnames=campos, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                        
+                        # Escribir encabezados
+                        writer.writeheader()
+                        
+                        # Escribir filas
                         for uuid, alerta in datos.items():
-                            # Crear un objeto con los campos requeridos específicos para alertas
-                            resultado = {
+                            # Crear un diccionario con los campos requeridos - sin reportedBy ni subtype
+                            fila = {
                                 "uuid": alerta.get("uuid", uuid),
-                                "nThumbsUp": alerta.get("nThumbsUp", 0),
                                 "city": alerta.get("city", ""),
-                                "municipalityUser": alerta.get("municipalityUser", ""),
+                                "municipalityUser": alerta.get("reportByMunicipalityUser", ""),
                                 "type": alerta.get("type", ""),
-                                "subtype": alerta.get("subtype", ""),
                                 "street": alerta.get("street", ""),
-                                "reportedBy": alerta.get("reportedBy", ""),
                                 "confidence": alerta.get("confidence", 0),
                                 "location_x": alerta.get("location", {}).get("x", alerta.get("x", 0)),
                                 "location_y": alerta.get("location", {}).get("y", alerta.get("y", 0)),
                                 "fecha": alerta.get("fecha", "")
                             }
                             
-                            # Escribir el resultado como una línea JSON
-                            f_out.write(json.dumps(resultado) + '\n')
+                            # Escribir la fila al CSV
+                            writer.writerow(fila)
                     
                     return True
                 else:
@@ -58,6 +71,7 @@ def procesar_alertas(archivo_entrada, archivo_salida):
 def procesar_atascos(archivo_entrada, archivo_salida):
     """
     Procesa un archivo JSON de atascos y extrae los campos específicos requeridos.
+    Guarda el resultado en formato CSV.
     """
     print(f"Procesando atascos en {archivo_entrada}...")
     
@@ -71,10 +85,23 @@ def procesar_atascos(archivo_entrada, archivo_salida):
                 if isinstance(datos, dict) and all(isinstance(datos.get(k), dict) for k in datos if isinstance(k, str)):
                     print(f"Formato detectado: diccionario de atascos. Procesando {len(datos)} registros...")
                     
-                    with open(archivo_salida, 'w') as f_out:
+                    # Definir los campos para el CSV (encabezados)
+                    campos = [
+                        "uuid", "severity", "country", "length", "endnode", "roadtype", 
+                        "speed", "street", "fecha", "region", "city"
+                    ]
+                    
+                    with open(archivo_salida, 'w', newline='') as f_out:
+                        # Crear escritor CSV
+                        writer = csv.DictWriter(f_out, fieldnames=campos, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                        
+                        # Escribir encabezados
+                        writer.writeheader()
+                        
+                        # Escribir filas
                         for uuid, atasco in datos.items():
-                            # Crear un objeto con los campos requeridos específicos para atascos
-                            resultado = {
+                            # Crear un diccionario con los campos requeridos
+                            fila = {
                                 "uuid": atasco.get("uuid", uuid),
                                 "severity": atasco.get("severity", ""),
                                 "country": atasco.get("country", ""),
@@ -88,8 +115,8 @@ def procesar_atascos(archivo_entrada, archivo_salida):
                                 "city": atasco.get("city", "")
                             }
                             
-                            # Escribir el resultado como una línea JSON
-                            f_out.write(json.dumps(resultado) + '\n')
+                            # Escribir la fila al CSV
+                            writer.writerow(fila)
                     
                     return True
                 else:
@@ -144,7 +171,7 @@ def main():
     for archivo in archivos_alertas:
         nombre_base = os.path.basename(archivo)
         nombre_base_sin_extension = os.path.splitext(nombre_base)[0]
-        nombre_salida = os.path.join(dir_salida, f"transformed_alerta_{nombre_base_sin_extension}.jsonl")
+        nombre_salida = os.path.join(dir_salida, f"transformed_alerta_{nombre_base_sin_extension}.csv")
         
         if procesar_alertas(archivo, nombre_salida):
             alertas_procesadas += 1
@@ -154,7 +181,7 @@ def main():
     for archivo in archivos_atascos:
         nombre_base = os.path.basename(archivo)
         nombre_base_sin_extension = os.path.splitext(nombre_base)[0]
-        nombre_salida = os.path.join(dir_salida, f"transformed_atasco_{nombre_base_sin_extension}.jsonl")
+        nombre_salida = os.path.join(dir_salida, f"transformed_atasco_{nombre_base_sin_extension}.csv")
         
         if procesar_atascos(archivo, nombre_salida):
             atascos_procesados += 1
@@ -165,8 +192,8 @@ def main():
     print(f"- Atascos procesados: {atascos_procesados}/{len(archivos_atascos)}")
     
     # Verificar que los archivos se hayan creado correctamente
-    archivos_alertas_transformed = glob.glob(os.path.join(dir_salida, "transformed_alerta_*.jsonl"))
-    archivos_atascos_transformed = glob.glob(os.path.join(dir_salida, "transformed_atasco_*.jsonl"))
+    archivos_alertas_transformed = glob.glob(os.path.join(dir_salida, "transformed_alerta_*.csv"))
+    archivos_atascos_transformed = glob.glob(os.path.join(dir_salida, "transformed_atasco_*.csv"))
     
     print(f"Archivos de alertas creados: {len(archivos_alertas_transformed)}")
     print(f"Archivos de atascos creados: {len(archivos_atascos_transformed)}")
@@ -175,9 +202,11 @@ def main():
     if archivos_alertas_transformed:
         try:
             with open(archivos_alertas_transformed[0], 'r') as f:
-                primera_linea = f.readline().strip()
-                if primera_linea:
-                    print(f"Primera línea de alerta: {primera_linea[:100]}...")
+                primeras_lineas = f.readlines()[:2]  # Leer encabezado y primera fila
+                if primeras_lineas:
+                    print(f"Encabezado de alerta: {primeras_lineas[0].strip()}")
+                    if len(primeras_lineas) > 1:
+                        print(f"Primera fila de alerta: {primeras_lineas[1].strip()[:100]}...")
                 else:
                     print("El archivo de alertas está vacío.")
         except Exception as e:
@@ -186,9 +215,11 @@ def main():
     if archivos_atascos_transformed:
         try:
             with open(archivos_atascos_transformed[0], 'r') as f:
-                primera_linea = f.readline().strip()
-                if primera_linea:
-                    print(f"Primera línea de atasco: {primera_linea[:100]}...")
+                primeras_lineas = f.readlines()[:2]  # Leer encabezado y primera fila
+                if primeras_lineas:
+                    print(f"Encabezado de atasco: {primeras_lineas[0].strip()}")
+                    if len(primeras_lineas) > 1:
+                        print(f"Primera fila de atasco: {primeras_lineas[1].strip()[:100]}...")
                 else:
                     print("El archivo de atascos está vacío.")
         except Exception as e:
