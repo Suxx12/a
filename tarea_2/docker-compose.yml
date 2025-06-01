@@ -107,6 +107,7 @@ services:
     volumes:
       - ./m7-filtering/data:/app/data
       - ./m7-filtering/results:/app/results
+      - ./m7-filtering/data_preprocesada:/app/data_preprocesada
     environment:
       - MONGODB_URI=mongodb://admin:admin123@mongo:27017/
       - MONGODB_DB=trafico_rm
@@ -119,8 +120,6 @@ services:
         condition: service_completed_successfully
       mongo:
         condition: service_started
-          
-
 #Aca no es necesario definir una red comun para todos los contenedores
 #porque con docker compose esta red se crea de forma automatica "directorio_default"
 
