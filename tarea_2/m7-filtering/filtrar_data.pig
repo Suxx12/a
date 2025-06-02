@@ -33,9 +33,9 @@ alertas_completas = FILTER alertas_sin_encabezado BY
     (location_y IS NOT NULL) AND
     (fecha IS NOT NULL AND fecha != '');
 
--- ============================================================
+--
 -- SECCIÓN 2: PROCESAMIENTO DE ATASCOS
--- ============================================================
+-- 
 
 -- Cargar los datos de atascos desde CSV con delimitador ,
 atascos_raw = LOAD '/app/data_preprocesada/transformed_atasco_*.csv' USING PigStorage(',') AS (
@@ -69,18 +69,18 @@ atascos_completos = FILTER atascos_sin_encabezado BY
     (region IS NOT NULL AND region != '') AND
     (city IS NOT NULL AND city != '');
 
--- ============================================================
+-- 
 -- SECCIÓN 3: CREACIÓN DE DIRECTORIOS PARA RESULTADOS
--- ============================================================
+-- 
 
 -- Crear directorio para resultados
 sh mkdir -p /app/results/alertas_completas;
 sh mkdir -p /app/results/atascos_completos;
 sh chmod -R 777 /app/results;
 
--- ============================================================
+-- 
 -- SECCIÓN 4: ALMACENAMIENTO DE RESULTADOS EN FORMATO CSV
--- ============================================================
+--
 
 -- Almacenar todas las alertas completas en formato CSV con delimitador ,
 STORE alertas_completas INTO '/app/results/alertas_completas/alertas_filtradas' USING PigStorage(',');
@@ -88,9 +88,9 @@ STORE alertas_completas INTO '/app/results/alertas_completas/alertas_filtradas' 
 -- Almacenar todos los atascos completos en formato CSV con delimitador ,
 STORE atascos_completos INTO '/app/results/atascos_completos/atascos_filtrados' USING PigStorage(',');
 
--- ============================================================
+-- 
 -- SECCIÓN 5: ESCRITURA DE ENCABEZADOS EN ARCHIVOS CSV
--- ============================================================
+--
 
 -- Crear encabezados para el archivo de alertas (sin reportedBy ni subtype) con delimitador ,
 sh echo "uuid,city,municipalityUser,type,street,confidence,location_x,location_y,fecha" > /app/results/alertas_completas/encabezado.csv;

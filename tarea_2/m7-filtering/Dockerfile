@@ -20,7 +20,7 @@ RUN wget https://dlcdn.apache.org/pig/pig-0.17.0/pig-0.17.0.tar.gz && \
 # Crear directorio para bibliotecas
 RUN mkdir -p /opt/pig/lib
 
-# Descargar Piggybank (simple, sin reintentos ni verificación)
+# Descargar Piggybank 
 RUN wget https://repo1.maven.org/maven2/org/apache/pig/piggybank/0.17.0/piggybank-0.17.0.jar -O /opt/pig/lib/piggybank.jar
 
 # Configurar permisos

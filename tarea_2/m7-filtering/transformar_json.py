@@ -195,7 +195,7 @@ def main():
     dir_entrada = sys.argv[1]
     dir_salida = sys.argv[2]
     
-    # Verificar que los directorios existen
+    # verificar que los directorios existen
     if not os.path.isdir(dir_entrada):
         print(f"ERROR: El directorio de entrada '{dir_entrada}' no existe")
         sys.exit(1)
@@ -241,23 +241,23 @@ def main():
         if procesar_atascos(archivo, nombre_salida):
             atascos_procesados += 1
     
-    # Mostrar resumen del procesamiento
+    # mostrar resumen del procesamiento
     print(f"Proceso completado.")
     print(f"- Alertas procesadas: {alertas_procesadas}/{len(archivos_alertas)}")
     print(f"- Atascos procesados: {atascos_procesados}/{len(archivos_atascos)}")
     
-    # Verificar que los archivos se hayan creado correctamente
+    # verificar que los archivos se hayan creado correctamente
     archivos_alertas_transformed = glob.glob(os.path.join(dir_salida, "transformed_alerta_*.csv"))
     archivos_atascos_transformed = glob.glob(os.path.join(dir_salida, "transformed_atasco_*.csv"))
     
     print(f"Archivos de alertas creados: {len(archivos_alertas_transformed)}")
     print(f"Archivos de atascos creados: {len(archivos_atascos_transformed)}")
     
-    # Intentar leer un archivo transformado para verificar
+    # intentar leer un archivo transformado para verificar
     if archivos_alertas_transformed:
         try:
             with open(archivos_alertas_transformed[0], 'r') as f:
-                primeras_lineas = f.readlines()[:2]  # Leer encabezado y primera fila
+                primeras_lineas = f.readlines()[:2]  # leer encabezado y primera fila
                 if primeras_lineas:
                     print(f"Encabezado de alerta: {primeras_lineas[0].strip()}")
                     if len(primeras_lineas) > 1:
@@ -270,7 +270,7 @@ def main():
     if archivos_atascos_transformed:
         try:
             with open(archivos_atascos_transformed[0], 'r') as f:
-                primeras_lineas = f.readlines()[:2]  # Leer encabezado y primera fila
+                primeras_lineas = f.readlines()[:2]  # leer encabezado y primera fila
                 if primeras_lineas:
                     print(f"Encabezado de atasco: {primeras_lineas[0].strip()}")
                     if len(primeras_lineas) > 1:

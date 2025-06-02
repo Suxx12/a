@@ -1,5 +1,5 @@
 #!/bin/bash
-# filepath: /home/camilo/udp/sist-distribuidos/sistemas_distribuidos/tarea_2/m8-processing/run.sh
+# filepath: /home/renato/proyectos_universidad/sistemas_distribuidos/tarea_2/m8-processing/run.sh
 
 echo "Iniciando procesamiento de datos..."
 
@@ -14,5 +14,9 @@ pig -x local procesar_data.pig
 
 echo "Resultados del procesamiento:"
 ls -la /app/results/
+
+# Generar gráficos a partir de los resultados
+echo "Generando gráficos de los resultados..."
+python3 graficar_resultados.py
 
 echo "Procesamiento completado."

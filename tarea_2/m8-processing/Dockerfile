@@ -2,9 +2,10 @@ FROM openjdk:8-jdk-slim
 
 WORKDIR /app
 
-# Instalar wget y otras herramientas necesarias
+# Instalar wget, Python3, pip y otras herramientas necesarias
 RUN apt-get update && \
-    apt-get install -y wget dos2unix && \
+    apt-get install -y wget dos2unix python3 python3-pip python3-dev build-essential \
+                       libfreetype6-dev pkg-config libpng-dev && \
     apt-get clean
 
 # Descargar e instalar Apache Pig
@@ -31,6 +32,12 @@ ENV HADOOP_HOME=/opt/pig
 # Copiar scripts
 COPY procesar_data.pig .
 COPY run.sh .
+COPY graficar_resultados.py .
+
+# Opción 1: Si usas un archivo requirements.txt
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+
 
 # Crear directorio para datos importados de m7 y resultados
 RUN mkdir -p /app/input 
@@ -38,7 +45,8 @@ RUN mkdir -p /app/results
 
 # Arreglar posibles problemas con los saltos de línea y permisos
 RUN dos2unix run.sh && \
-    chmod +x run.sh
+    chmod +x run.sh && \
+    chmod +x graficar_resultados.py
 
 # Comando por defecto
 CMD ["./run.sh"]
