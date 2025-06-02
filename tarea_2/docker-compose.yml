@@ -1,11 +1,11 @@
 services: 
-  scrapper:
-    build: ./m1_scrapper   # Esto entra a la carpeta scrapper y buildea el Dockerfile que esta adentro
-    container_name: waze-scrapper-general
-    volumes:
-      - ./m1_scrapper/jsons:/app/jsons   # Esto mapea la carpeta datos del host a la carpeta /app/jsons dentro del contenedor
-    depends_on:
-      - mongo # Se usa el nombre del servicio
+  #scrapper:
+   # build: ./m1_scrapper   # Esto entra a la carpeta scrapper y buildea el Dockerfile que esta adentro
+    #container_name: waze-scrapper-general
+    #volumes:
+    #  - ./m1_scrapper/jsons:/app/jsons   # Esto mapea la carpeta datos del host a la carpeta /app/jsons dentro del contenedor
+    #depends_on:
+     # - mongo # Se usa el nombre del servicio
 
   mongo: #Servidor de base de datos
     image: mongo:latest
@@ -30,42 +30,40 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongo
     depends_on:
       - mongo # Se usa el nombre del servicio
-  redis:
-    image: redis:6.0.7
-    container_name: redis_general
-    restart: always
-    ports:
-      - 6379:6379
-    volumes:
-      - ./m3-cache/redis.conf:/usr/local/etc/redis/redis.conf
-    command: [sh, -c, "rm -f /data/dump.rdb && redis-server /usr/local/etc/redis/redis.conf"] #Elimina persistencia lee archivo de configuracion para tamaño maximo y politica de remocion
-    #volumes:
-    #  - redis_volume_data:/data
+  #redis:
+  #  image: redis:6.0.7
+  #  container_name: redis_general
+  #  restart: always
+  #  ports:
+  #    - 6379:6379
+  #  volumes:
+  #    - ./m3-cache/redis.conf:/usr/local/etc/redis/redis.conf
+  #  command: [sh, -c, "rm -f /data/dump.rdb && redis-server /usr/local/etc/redis/redis.conf"] #Elimina persistencia lee archivo de configuracion para tamaño maximo y politica de remocion
 
-  redis_insight:
-    image: redislabs/redisinsight:1.14.0
-    container_name: redis_insight_general
-    restart: always
-    ports:
-      - 8001:8001
-    #volumes:
-    #  - redis_insight_volume_data:/db
+
+  #redis_insight:
+   # image: redislabs/redisinsight:1.14.0
+   # container_name: redis_insight_general
+   # restart: always
+   # ports:
+   #   - 8001:8001
+
   
-  api_server:
-    build: ./m4-server
-    container_name: api_server_general
-    depends_on:
-      - mongo
-      - redis
-      - redis_insight
-    restart: on-failure
-    ports:
-      - "5000:5000"
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - MONGO_URI=mongodb://admin:admin123@mongo:27017/
-      - MONGO_DB=trafico_rm
+  #api_server:
+   # build: ./m4-server
+    #container_name: api_server_general
+    #depends_on:
+     # - mongo
+      #- redis
+      #- redis_insight
+    #restart: on-failure
+    #ports:
+     # - "5000:5000"
+    #environment:
+    #  - REDIS_HOST=redis
+    #  - REDIS_PORT=6379
+    #  - MONGO_URI=mongodb://admin:admin123@mongo:27017/
+    #  - MONGO_DB=trafico_rm
 
   # Servicio para cargar archivos JSON a MongoDB
   json_loader:
@@ -91,15 +89,15 @@ services:
    # volumes:
     #  - ./m5-generador-trafico/Normal:/app
 
-  generador_trafico_zipf_cache:
-    build: ./m5-generador-trafico/ZipF
-    container_name: generador_trafico_zipf_cache_general
-    depends_on:
-      - mongo
-      - redis
-      - api_server
-    volumes:
-      - ./m5-generador-trafico:/app
+  #generador_trafico_zipf_cache:
+  #  build: ./m5-generador-trafico/ZipF
+  #  container_name: generador_trafico_zipf_cache_general
+  #  depends_on:
+  #    - mongo
+  #    - redis
+  #    - api_server
+  #  volumes:
+  #    - ./m5-generador-trafico:/app
   
   filtering:
     build: ./m7-filtering
@@ -114,12 +112,24 @@ services:
       - MONGODB_COLECCION_ALERTAS=alertas
       - MONGODB_COLECCION_ATASCOS=atascos
     depends_on:
-      json_loader:
-        condition: service_completed_successfully
-      scrapper:
-        condition: service_completed_successfully
+      #json_loader:
+      #  condition: service_completed_successfully
+      #scrapper:
+      #  condition: service_completed_successfully
       mongo:
         condition: service_started
+
+  # Add the m8-processing service
+  processing:
+    build: ./m8-processing
+    container_name: m8-processing-general
+    volumes:
+      - ./m7-filtering/results:/app/input  # Aca el m7 guarda los csv limpios
+      - ./m8-processing/results:/app/results
+    depends_on:
+      filtering:
+        condition: service_completed_successfully
+
 #Aca no es necesario definir una red comun para todos los contenedores
 #porque con docker compose esta red se crea de forma automatica "directorio_default"
 
@@ -131,6 +141,4 @@ services:
 
 volumes:
   mongo_data:
-  #redis_volume_data:
-  #redis_insight_volume_data:
     
