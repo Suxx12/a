@@ -5,8 +5,8 @@ REGISTER '/opt/pig/lib/piggybank.jar';
 -- SECCIÓN 1: PROCESAMIENTO DE ALERTAS
 -- ============================================================
 
--- Cargar los datos de alertas desde CSV (esquema actualizado sin reportedBy ni subtype)
-alertas_raw = LOAD '/app/data_preprocesada/transformed_alerta_*.csv' USING org.apache.pig.piggybank.storage.CSVLoader() AS (
+-- Cargar los datos de alertas desde CSV con delimitador |
+alertas_raw = LOAD '/app/data_preprocesada/transformed_alerta_*.csv' USING PigStorage('|') AS (
     uuid:chararray, 
     city:chararray, 
     municipalityUser:chararray, 
@@ -37,8 +37,8 @@ alertas_completas = FILTER alertas_sin_encabezado BY
 -- SECCIÓN 2: PROCESAMIENTO DE ATASCOS
 -- ============================================================
 
--- Cargar los datos de atascos desde CSV
-atascos_raw = LOAD '/app/data_preprocesada/transformed_atasco_*.csv' USING org.apache.pig.piggybank.storage.CSVLoader() AS (
+-- Cargar los datos de atascos desde CSV con delimitador |
+atascos_raw = LOAD '/app/data_preprocesada/transformed_atasco_*.csv' USING PigStorage('|') AS (
     uuid:chararray, 
     severity:int, 
     country:chararray, 
@@ -82,20 +82,20 @@ sh chmod -R 777 /app/results;
 -- SECCIÓN 4: ALMACENAMIENTO DE RESULTADOS EN FORMATO CSV
 -- ============================================================
 
--- Almacenar todas las alertas completas en formato CSV
-STORE alertas_completas INTO '/app/results/alertas_completas/alertas_filtradas' USING PigStorage(',');
+-- Almacenar todas las alertas completas en formato CSV con delimitador |
+STORE alertas_completas INTO '/app/results/alertas_completas/alertas_filtradas' USING PigStorage('|');
 
--- Almacenar todos los atascos completos en formato CSV
-STORE atascos_completos INTO '/app/results/atascos_completos/atascos_filtrados' USING PigStorage(',');
+-- Almacenar todos los atascos completos en formato CSV con delimitador |
+STORE atascos_completos INTO '/app/results/atascos_completos/atascos_filtrados' USING PigStorage('|');
 
 -- ============================================================
 -- SECCIÓN 5: ESCRITURA DE ENCABEZADOS EN ARCHIVOS CSV
 -- ============================================================
 
--- Crear encabezados para el archivo de alertas (sin reportedBy ni subtype)
-sh echo "uuid,city,municipalityUser,type,street,confidence,location_x,location_y,fecha" > /app/results/alertas_completas/encabezado.csv;
+-- Crear encabezados para el archivo de alertas (sin reportedBy ni subtype) con delimitador |
+sh echo "uuid|city|municipalityUser|type|street|confidence|location_x|location_y|fecha" > /app/results/alertas_completas/encabezado.csv;
 sh cat /app/results/alertas_completas/encabezado.csv /app/results/alertas_completas/alertas_filtradas/part-* > /app/results/alertas_completas/alertas_completas.csv;
 
--- Crear encabezados para el archivo de atascos
-sh echo "uuid,severity,country,length,endnode,roadtype,speed,street,fecha,region,city" > /app/results/atascos_completos/encabezado.csv;
+-- Crear encabezados para el archivo de atascos con delimitador |
+sh echo "uuid|severity|country|length|endnode|roadtype|speed|street|fecha|region|city" > /app/results/atascos_completos/encabezado.csv;
 sh cat /app/results/atascos_completos/encabezado.csv /app/results/atascos_completos/atascos_filtrados/part-* > /app/results/atascos_completos/atascos_completos.csv;

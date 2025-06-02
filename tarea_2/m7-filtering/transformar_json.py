@@ -9,7 +9,7 @@ from datetime import datetime
 def procesar_alertas(archivo_entrada, archivo_salida):
     """
     Procesa un archivo JSON de alertas y extrae los campos específicos requeridos.
-    Guarda el resultado en formato CSV.
+    Guarda el resultado en formato CSV con delimitador '|'.
     """
     print(f"Procesando alertas en {archivo_entrada}...")
     
@@ -31,8 +31,8 @@ def procesar_alertas(archivo_entrada, archivo_salida):
                     ]
                     
                     with open(archivo_salida, 'w', newline='') as f_out:
-                        # Crear escritor CSV
-                        writer = csv.DictWriter(f_out, fieldnames=campos, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                        # Crear escritor CSV con delimitador '|'
+                        writer = csv.DictWriter(f_out, fieldnames=campos, delimiter='|', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                         
                         # Escribir encabezados
                         writer.writeheader()
@@ -71,7 +71,7 @@ def procesar_alertas(archivo_entrada, archivo_salida):
 def procesar_atascos(archivo_entrada, archivo_salida):
     """
     Procesa un archivo JSON de atascos y extrae los campos específicos requeridos.
-    Guarda el resultado en formato CSV.
+    Guarda el resultado en formato CSV con delimitador '|'.
     """
     print(f"Procesando atascos en {archivo_entrada}...")
     
@@ -92,8 +92,8 @@ def procesar_atascos(archivo_entrada, archivo_salida):
                     ]
                     
                     with open(archivo_salida, 'w', newline='') as f_out:
-                        # Crear escritor CSV
-                        writer = csv.DictWriter(f_out, fieldnames=campos, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                        # Crear escritor CSV con delimitador '|'
+                        writer = csv.DictWriter(f_out, fieldnames=campos, delimiter='|', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                         
                         # Escribir encabezados
                         writer.writeheader()
