@@ -9,7 +9,7 @@ from datetime import datetime
 def procesar_alertas(archivo_entrada, archivo_salida):
     """
     Procesa un archivo JSON de alertas y extrae los campos específicos requeridos.
-    Guarda el resultado en formato CSV con delimitador '|'.
+    Guarda el resultado en formato CSV con delimitador ','.
     """
     print(f"Procesando alertas en {archivo_entrada}...")
     
@@ -30,29 +30,52 @@ def procesar_alertas(archivo_entrada, archivo_salida):
                         "location_x", "location_y", "fecha"
                     ]
                     
+                    # Preparar datos preprocesados
+                    filas_procesadas = []
+                    
+                    # Procesar todos los registros
+                    for uuid, alerta in datos.items():
+                        # Obtener ciudad y reemplazar comas por punto y coma
+                        city = alerta.get("city", "")
+                        if city and isinstance(city, str):
+                            # Reemplazar comas por punto y coma y estandarizar formato
+                            city = city.replace(',', ';')
+                            # Convertir a formato título (primera letra de cada palabra en mayúscula)
+                            city_parts = city.split(';')
+                            city_parts = [part.strip().title() for part in city_parts]
+                            city = ';'.join(city_parts)
+                        
+                        # Crear un diccionario con los campos requeridos - sin reportedBy ni subtype
+                        fila = {
+                            "uuid": alerta.get("uuid", uuid),
+                            "city": city,
+                            "municipalityUser": alerta.get("reportByMunicipalityUser", ""),
+                            "type": alerta.get("type", ""),
+                            "street": alerta.get("street", ""),
+                            "confidence": alerta.get("confidence", 0),
+                            "location_x": alerta.get("location", {}).get("x", alerta.get("x", 0)),
+                            "location_y": alerta.get("location", {}).get("y", alerta.get("y", 0)),
+                            "fecha": alerta.get("fecha", "")
+                        }
+                        
+                        filas_procesadas.append(fila)
+                    
+                    # Ahora escribir al CSV
                     with open(archivo_salida, 'w', newline='') as f_out:
-                        # Crear escritor CSV con delimitador '|'
-                        writer = csv.DictWriter(f_out, fieldnames=campos, delimiter='|', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                        # Crear escritor CSV
+                        writer = csv.DictWriter(
+                            f_out, 
+                            fieldnames=campos, 
+                            delimiter=',', 
+                            quotechar='"', 
+                            quoting=csv.QUOTE_MINIMAL  # Solo poner comillas cuando sea necesario
+                        )
                         
                         # Escribir encabezados
                         writer.writeheader()
                         
-                        # Escribir filas
-                        for uuid, alerta in datos.items():
-                            # Crear un diccionario con los campos requeridos - sin reportedBy ni subtype
-                            fila = {
-                                "uuid": alerta.get("uuid", uuid),
-                                "city": alerta.get("city", ""),
-                                "municipalityUser": alerta.get("reportByMunicipalityUser", ""),
-                                "type": alerta.get("type", ""),
-                                "street": alerta.get("street", ""),
-                                "confidence": alerta.get("confidence", 0),
-                                "location_x": alerta.get("location", {}).get("x", alerta.get("x", 0)),
-                                "location_y": alerta.get("location", {}).get("y", alerta.get("y", 0)),
-                                "fecha": alerta.get("fecha", "")
-                            }
-                            
-                            # Escribir la fila al CSV
+                        # Escribir todas las filas procesadas
+                        for fila in filas_procesadas:
                             writer.writerow(fila)
                     
                     return True
@@ -71,11 +94,12 @@ def procesar_alertas(archivo_entrada, archivo_salida):
 def procesar_atascos(archivo_entrada, archivo_salida):
     """
     Procesa un archivo JSON de atascos y extrae los campos específicos requeridos.
-    Guarda el resultado en formato CSV con delimitador '|'.
+    Guarda el resultado en formato CSV con delimitador ','.
     """
     print(f"Procesando atascos en {archivo_entrada}...")
     
     try:
+        # Primero cargar el JSON
         with open(archivo_entrada, 'r') as f:
             try:
                 # Cargar todo el archivo como un único objeto JSON
@@ -85,38 +109,69 @@ def procesar_atascos(archivo_entrada, archivo_salida):
                 if isinstance(datos, dict) and all(isinstance(datos.get(k), dict) for k in datos if isinstance(k, str)):
                     print(f"Formato detectado: diccionario de atascos. Procesando {len(datos)} registros...")
                     
-                    # Definir los campos para el CSV (encabezados)
-                    campos = [
-                        "uuid", "severity", "country", "length", "endnode", "roadtype", 
-                        "speed", "street", "fecha", "region", "city"
-                    ]
+                    # Preparar datos preprocesados con city modificado
+                    filas_procesadas = []
                     
+                    # Procesar todos los registros
+                    for uuid, atasco in datos.items():
+                        # Obtener ciudad y reemplazar comas por punto y coma
+                        city = atasco.get("city", "")
+                        if city and isinstance(city, str):
+                            # Reemplazar comas por punto y coma y estandarizar formato
+                            city = city.replace(',', ';')
+                            # Convertir a formato título (primera letra de cada palabra en mayúscula)
+                            city_parts = city.split(';')
+                            city_parts = [part.strip().title() for part in city_parts]
+                            city = ';'.join(city_parts)
+                        
+                        # Crear un diccionario con los campos requeridos
+                        fila = {
+                            "uuid": atasco.get("uuid", uuid),
+                            "severity": atasco.get("severity", ""),
+                            "country": atasco.get("country", ""),
+                            "length": atasco.get("length", ""),
+                            "endnode": atasco.get("endNode", ""),
+                            "roadtype": atasco.get("roadType", ""),
+                            "speed": atasco.get("speedKMH", atasco.get("speed", "")),
+                            "street": atasco.get("street", ""),
+                            "fecha": atasco.get("fecha", ""),
+                            "region": atasco.get("region", ""),
+                            "city": city
+                        }
+                        
+                        filas_procesadas.append(fila)
+                    
+                    # Ahora escribir directamente al CSV con configuración controlada
                     with open(archivo_salida, 'w', newline='') as f_out:
-                        # Crear escritor CSV con delimitador '|'
-                        writer = csv.DictWriter(f_out, fieldnames=campos, delimiter='|', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+                        # Definir los campos para el CSV (encabezados)
+                        campos = [
+                            "uuid", "severity", "country", "length", "endnode", "roadtype", 
+                            "speed", "street", "fecha", "region", "city"
+                        ]
+                        
+                        # Crear escritor CSV
+                        writer = csv.DictWriter(
+                            f_out, 
+                            fieldnames=campos, 
+                            delimiter=',', 
+                            quotechar='"', 
+                            quoting=csv.QUOTE_MINIMAL  # Solo poner comillas cuando sea necesario
+                        )
                         
                         # Escribir encabezados
                         writer.writeheader()
                         
-                        # Escribir filas
-                        for uuid, atasco in datos.items():
-                            # Crear un diccionario con los campos requeridos
-                            fila = {
-                                "uuid": atasco.get("uuid", uuid),
-                                "severity": atasco.get("severity", ""),
-                                "country": atasco.get("country", ""),
-                                "length": atasco.get("length", ""),
-                                "endnode": atasco.get("endNode", ""),
-                                "roadtype": atasco.get("roadType", ""),
-                                "speed": atasco.get("speedKMH", atasco.get("speed", "")),
-                                "street": atasco.get("street", ""),
-                                "fecha": atasco.get("fecha", ""),
-                                "region": atasco.get("region", ""),
-                                "city": atasco.get("city", "")
-                            }
-                            
-                            # Escribir la fila al CSV
+                        # Escribir todas las filas procesadas
+                        for fila in filas_procesadas:
                             writer.writerow(fila)
+                    
+                    # Verificar resultados
+                    with open(archivo_salida, 'r') as check_file:
+                        contenido = check_file.read(1000)  # Leer los primeros 1000 caracteres
+                        if ';' in contenido:
+                            print(f"✅ Se encontró al menos un punto y coma en los datos procesados.")
+                        else:
+                            print(f"⚠️ No se encontraron puntos y comas en la muestra inicial.")
                     
                     return True
                 else:
