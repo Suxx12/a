@@ -1,0 +1,64 @@
+uuid,city,municipalityUser,type,street,confidence,location_x,location_y,fecha
+2c869d68-5f66-4a2d-869e-5c9fdf38b19d|Malloco| Peñaflor|false|ROAD_CLOSED||1.0|-70.876155|-33.614812
+d6415246-4dc5-450e-b30a-7500683a196b|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876663|-33.616679
+ee14f0ec-2fac-493b-a47a-77ce66c26018|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.875525|-33.618066
+b92fb8f4-b719-496c-b0dd-76392702960d|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.875938|-33.614047
+f35d4177-ca17-4644-a20f-e3425d651178|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876047|-33.614422
+e416498c-25a6-4e34-8be5-028376a13afb|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876155|-33.614812
+f00d0718-442b-42f3-b9e6-da0a21e4dbc4|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.875472|-33.617869
+15ce0302-2e79-4d89-959f-69de4d837d2b|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876384|-33.615636
+7180d6c3-27a6-47de-819d-91235ae35b57|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876263|-33.615202
+fa4e67b1-a007-449c-880f-ae09f8fba3d4|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.87692|-33.617618
+572c36ed-61be-4f8d-9c39-6a89476c25b5|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876796|-33.617153
+f9a9bb60-5db0-4300-a43b-87539bfcff41|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876663|-33.616679
+42358586-9935-40d6-9b91-ebb6a8f1a3a4|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876796|-33.617153
+e5476762-1d43-46dd-9153-f90dda8b8002|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.877062|-33.618167
+d7a88b0d-0a57-47ab-87aa-2c0f34d11d6a|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.875204|-33.616932
+7086ab75-a299-439c-9345-0b87e01f94f7|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876047|-33.614422
+d0480e78-cc5b-41ef-91cc-e164985da894|Malloco| Peñaflor|false|ROAD_CLOSED||1.0|-70.876384|-33.615636
+2f6bfe62-0e90-4483-bc81-676e3ece49ed|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.875833|-33.613657
+05bf6d37-a5df-43c4-8540-4e88e4996799|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876499|-33.616095
+52758476-3216-4d04-8eb7-afca19b34873|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.87692|-33.617618
+e2da1606-e45a-44e3-b8e1-ba3b92af5fa2|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876499|-33.616095
+36040311-7e19-4bab-95d0-ddfd29e5810a|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.875938|-33.614047
+d25fddc8-58ec-4d2a-a318-637fd661bce9|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.875809|-33.616829
+78fb6cdf-98bd-4d51-97a9-87f3a5e60244|Malloco| Peñaflor|false|ROAD_CLOSED||0.0|-70.876263|-33.615202
+38d681fe-1d9e-4f81-8b1d-9264c16366c3|Malloco| Peñaflor|false|JAM||0.0|-70.863789|-33.610091
+d0356243-a1e1-4045-b718-54f8eab09e28|Nos| San Bernardo|false|JAM||0.0|-70.710498|-33.637877
+a9430e85-6940-496a-9794-60e76aabc872|Nos| San Bernardo|false|JAM||0.0|-70.673843|-33.638953
+d2f52312-bd0c-4f80-9ead-ffb34fdb1e32|Nos| San Bernardo|false|JAM||0.0|-70.678639|-33.6395
+7fedc5a1-5e3f-4c8c-95ba-9de3a655bab3|Nos| San Bernardo|false|JAM||0.0|-70.681817|-33.639079
+4d6b4183-ea71-4140-97c2-1920929af304|Malloco| Peñaflor|false|POLICE||0.0|-70.864791|-33.603124
+1402b5e9-ee47-4cd0-a083-c5f3b2e6b973|Malloco| Peñaflor|false|POLICE||0.0|-70.864737|-33.603141
+4c0aeef0-d1d7-436a-8703-eed9e4ff2989|Malloco| Peñaflor|false|HAZARD||0.0|-70.851407|-33.603471
+8dcc9a62-e5fa-4610-b2bd-2cb3e5bcb730|Nos| San Bernardo|false|HAZARD||0.0|-70.713111|-33.631382
+76b33bf7-4f0a-4a33-83d6-8eb0c2720f67|Nos| San Bernardo|false|HAZARD||5.0|-70.69576|-33.640322
+b17963c6-908f-448a-b677-789f5660a3dd|Malloco| Peñaflor|false|POLICE||0.0|-70.877591|-33.610735
+094a4bd8-8224-4c0a-9fc4-f9dc98182538|Malloco| Peñaflor|false|JAM||0.0|-70.849991|-33.601905
+b59a01b8-bc05-4848-ad6f-216ab0c750f7|Malloco| Peñaflor|false|HAZARD||0.0|-70.857873|-33.610313
+2c4a8922-9d9a-4de7-9228-53480cd8babb|Nos| San Bernardo|false|JAM||0.0|-70.71316|-33.634897
+2a0fe365-538e-4da0-9895-7e69e87a2ee0|Nos| San Bernardo|false|JAM||0.0|-70.713549|-33.632308
+a919c85b-3581-4234-8bc8-1d331c1037f0|Nos| San Bernardo|false|JAM||0.0|-70.676942|-33.639427
+1422bf0e-bcca-4726-be83-59d83db90452|Nos| San Bernardo|false|HAZARD||0.0|-70.696959|-33.640412
+d1acff55-9d46-4ac0-ad2d-1d3ca6c82ac0|Nos| San Bernardo|false|JAM||0.0|-70.680165|-33.639282
+b7c79286-4225-46f9-a50d-19be34211edd|Nos| San Bernardo|false|JAM||0.0|-70.678174|-33.639504
+79f35344-ac9a-467e-ab8f-e27bd8601f04|Nos| San Bernardo|false|HAZARD||0.0|-70.698497|-33.642101
+22d00da0-bbbf-4cb7-82cb-de7ce41010d5|Nos| San Bernardo|false|HAZARD||0.0|-70.712543|-33.638238
+be7f4267-e9fe-4be5-80e0-ab8f6a3ce044|Malloco| Peñaflor|false|JAM||0.0|-70.872531|-33.629868
+b19b5fe9-cba2-4b9a-87bb-5728aeee4fdc|Malloco| Peñaflor|false|JAM||0.0|-70.856674|-33.608983
+6581ae5c-568d-4f44-b252-3e315b9f925d|Nos| San Bernardo|false|JAM||0.0|-70.70918|-33.637683
+c9a98a5b-0c0e-4356-9bd4-95ef4e82fd84|Malloco| Peñaflor|false|POLICE||0.0|-70.853806|-33.610052
+08b6b8eb-eb31-426b-b900-7a93fd251680|Nos| San Bernardo|false|HAZARD||0.0|-70.711207|-33.643497
+91f7eb29-e029-44cd-945f-1cd2c89551dd|Nos| San Bernardo|false|JAM||0.0|-70.713162|-33.63488
+98192c91-4f7f-44fd-9f80-40498543e7d9|El Monte| Buin|false|JAM||0.0|-70.664093|-33.66654
+fd71fc30-5d63-48e4-9ae4-076afd97d412|Las Vizcachas| Puente Alto|false|POLICE||1.0|-70.517545|-33.598236
+5c995e8f-d65a-444c-b0ed-757f60b44688|Malloco| Peñaflor|false|ACCIDENT||0.0|-70.869562|-33.625869
+df676eaa-adaf-49ce-89cb-20378025a211|Malloco| Peñaflor|false|HAZARD||0.0|-70.873465|-33.6311
+cb10df72-14b7-45c7-9d9a-f4cc5f49e532|Malloco| Peñaflor|false|POLICE||1.0|-70.871066|-33.627902
+c344fef9-2aa8-4646-a43c-c9eb733956df|Malloco| Peñaflor|false|ACCIDENT||0.0|-70.862544|-33.616517
+2cf9f944-d51e-4ae8-8768-4b9f5dff5c56|Malloco| Peñaflor|false|POLICE||0.0|-70.857768|-33.610188
+8134ea2d-c8a6-418c-8f09-703021034278|Malloco| Peñaflor|false|ACCIDENT||0.0|-70.863515|-33.617841
+038498f0-affd-4bd9-bf37-42ebe011b506|Malloco| Peñaflor|false|POLICE||0.0|-70.864722|-33.619446
+fe7aae92-4d59-44cc-9eb4-77889f942b66|Malloco| Peñaflor|false|HAZARD||0.0|-70.858714|-33.611364
+e6e6b37b-3f35-4504-b89d-3e3b7883dfe5|Malloco| Peñaflor|false|HAZARD||5.0|-70.851761|-33.602806
+5232bcc9-0ba0-4641-b214-4d73cbc0a968|Malloco| Peñaflor|false|JAM||0.0|-70.864292|-33.610113

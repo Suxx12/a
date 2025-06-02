@@ -1,0 +1,59 @@
+comuna,cantidad_alertas
+|9516
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.876499|-33.616095|2025-04-23 18:53:40|2
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.876796|-33.617153|2025-04-23 18:53:40|2
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.876663|-33.616679|2025-04-23 18:53:40|2
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.876263|-33.615202|2025-04-23 18:53:40|2
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.876047|-33.614422|2025-04-23 18:53:40|2
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.875938|-33.614047|2025-04-23 18:53:40|2
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.87692|-33.617618|2025-04-23 18:53:40|2
+ San Bernardo|false|HAZARD|Camino Nos a Los Morros|5.0|-70.69576|-33.640322|2025-04-21 15:44:54|1
+ San Bernardo|false|JAM|Camino Nos a Los Morros|0.0|-70.681817|-33.639079|2025-04-21 19:33:29|1
+ San Bernardo|false|JAM|Camino Nos a Los Morros|0.0|-70.680165|-33.639282|2025-04-14 18:54:35|1
+ San Bernardo|false|JAM|Camino Nos a Los Morros|0.0|-70.678174|-33.639504|2025-04-15 15:37:26|1
+ San Bernardo|false|JAM|Camino Nos a Los Morros|0.0|-70.676942|-33.639427|2025-04-14 18:54:35|1
+ San Bernardo|false|JAM|Camino Nos a Los Morros|0.0|-70.673843|-33.638953|2025-04-15 19:16:50|1
+ San Bernardo|false|JAM|Camino Nos a Los Morros|0.0|-70.678639|-33.6395|2025-04-15 19:16:50|1
+ Peñaflor|false|POLICE|Av. Vicuña Mackenna|0.0|-70.877591|-33.610735|2025-04-25 16:49:18|1
+ San Bernardo|false|HAZARD|Regina Gálvez|0.0|-70.712543|-33.638238|2025-04-15 15:37:26|1
+ San Bernardo|false|HAZARD|Pablo Burchard|0.0|-70.711207|-33.643497|2025-04-24 18:57:23|1
+ Peñaflor|false|JAM|Av. Vicuña Mackenna|0.0|-70.864292|-33.610113|2025-06-01 21:12:59|1
+ Peñaflor|false|JAM|Av. Vicuña Mackenna|0.0|-70.863789|-33.610091|2025-04-23 18:53:40|1
+ Peñaflor|false|ROAD_CLOSED|Las Acacias|0.0|-70.875525|-33.618066|2025-04-23 18:53:40|1
+ Peñaflor|false|ROAD_CLOSED|Las Acacias|0.0|-70.875472|-33.617869|2025-04-23 18:53:40|1
+ Peñaflor|false|POLICE|Caletera Ruta 78|0.0|-70.853806|-33.610052|2025-04-14 14:46:56|1
+ San Bernardo|false|HAZARD|Los Helechos|0.0|-70.698497|-33.642101|2025-04-15 15:37:26|1
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|1.0|-70.876384|-33.615636|2025-04-23 18:53:40|1
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|1.0|-70.876155|-33.614812|2025-04-23 18:53:40|1
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.877062|-33.618167|2025-04-23 18:53:40|1
+ Buin|false|JAM|Camino Padre Hurtado|0.0|-70.664093|-33.66654|2025-04-24 18:57:23|1
+ Peñaflor|false|JAM|Av. Balmaceda|0.0|-70.872531|-33.629868|2025-04-15 18:01:55|1
+ San Bernardo|false|HAZARD|Av. Pdte. Jorge Alessandri Rodríguez|0.0|-70.713111|-33.631382|2025-04-21 15:44:54|1
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.876384|-33.615636|2025-04-23 18:53:40|1
+ Peñaflor|false|JAM|Av. Balmaceda|0.0|-70.856674|-33.608983|2025-04-15 18:01:55|1
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.876155|-33.614812|2025-04-23 18:53:40|1
+ Peñaflor|false|JAM|Av. Balmaceda|0.0|-70.849991|-33.601905|2025-04-14 18:54:35|1
+ Peñaflor|false|POLICE|Rucananco|0.0|-70.864791|-33.603124|2025-04-21 15:44:54|1
+ Peñaflor|false|ROAD_CLOSED|Los Aromos|0.0|-70.875833|-33.613657|2025-04-23 18:53:40|1
+ Peñaflor|false|ACCIDENT|Av. Balmaceda|0.0|-70.869562|-33.625869|2025-04-20 16:58:57|1
+ Peñaflor|false|ACCIDENT|Av. Balmaceda|0.0|-70.863515|-33.617841|2025-04-20 16:58:57|1
+ Peñaflor|false|ACCIDENT|Av. Balmaceda|0.0|-70.862544|-33.616517|2025-04-20 16:58:57|1
+ Buin|false|POLICE|Camino Padre Hurtado|0.0|-70.665339|-33.669191|2025-06-01 22:03:38|1
+ San Bernardo|false|JAM|Regina Gálvez|0.0|-70.710498|-33.637877|2025-04-23 18:53:40|1
+ Peñaflor|false|ROAD_CLOSED|Los Olmos|0.0|-70.875809|-33.616829|2025-04-23 18:53:40|1
+ Peñaflor|false|ROAD_CLOSED|Los Olmos|0.0|-70.875204|-33.616932|2025-04-23 18:53:40|1
+ Peñaflor|false|POLICE|Rucananco|0.0|-70.864737|-33.603141|2025-04-21 15:44:54|1
+ Peñaflor|false|HAZARD|Av. Miraflores|5.0|-70.851761|-33.602806|2025-06-01 21:12:59|1
+ Peñaflor|false|POLICE|Av. Balmaceda|1.0|-70.871066|-33.627902|2025-04-20 16:58:57|1
+ Peñaflor|false|POLICE|Av. Balmaceda|0.0|-70.864722|-33.619446|2025-04-20 16:58:57|1
+ Peñaflor|false|POLICE|Av. Balmaceda|0.0|-70.857768|-33.610188|2025-04-20 16:58:57|1
+ Peñaflor|false|HAZARD|Av. Balmaceda|0.0|-70.858714|-33.611364|2025-04-20 16:58:57|1
+ Peñaflor|false|HAZARD|Av. Balmaceda|0.0|-70.857873|-33.610313|2025-04-14 18:54:35|1
+ Peñaflor|false|HAZARD|Av. Balmaceda|0.0|-70.851407|-33.603471|2025-04-21 15:44:54|1
+ Peñaflor|false|HAZARD|Av. Balmaceda|0.0|-70.873465|-33.6311|2025-04-20 16:58:57|1
+ San Bernardo|false|JAM|Av. Pdte. Jorge Alessandri Rodríguez|0.0|-70.713549|-33.632308|2025-04-14 18:54:35|1
+ San Bernardo|false|JAM|Av. Pdte. Jorge Alessandri Rodríguez|0.0|-70.71316|-33.634897|2025-04-14 18:54:35|1
+ San Bernardo|false|JAM|Av. Pdte. Jorge Alessandri Rodríguez|0.0|-70.713162|-33.63488|2025-04-24 18:57:23|1
+ San Bernardo|false|JAM|Paso Inferior Regina Gálvez|0.0|-70.70918|-33.637683|2025-04-15 18:01:55|1
+ Puente Alto|false|POLICE|Camino al Volcán lateral|1.0|-70.517545|-33.598236|2025-04-24 18:57:23|1
+ San Bernardo|false|HAZARD|Camino Nos a Los Morros|0.0|-70.696959|-33.640412|2025-04-14 18:54:35|1
