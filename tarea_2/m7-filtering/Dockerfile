@@ -4,7 +4,11 @@ WORKDIR /app
 
 # Instalar Python y dependencias necesarias
 RUN apt-get update && \
-    apt-get install -y python3 python3-pip wget dos2unix ca-certificates && \
+    apt-get install -y python3 python3-pip wget dos2unix ca-certificates gnupg && \
+    wget -qO - https://www.mongodb.org/static/pgp/server-6.0.asc | apt-key add - && \
+    echo "deb http://repo.mongodb.org/apt/debian bullseye/mongodb-org/6.0 main" | tee /etc/apt/sources.list.d/mongodb-org-6.0.list && \
+    apt-get update && \
+    apt-get install -y mongodb-database-tools && \
     apt-get clean
 
 # Copiar requirements e instalar dependencias de Python
@@ -41,7 +45,7 @@ COPY transformar_json.py .
 RUN chmod +x transformar_json.py
 
 # Crear directorio para datos transformados
-RUN mkdir -p /app/data_preprocesada
+#RUN mkdir -p /app/data_preprocesada
 
 # Crear directorio para datos exportados y resultados
 RUN mkdir -p /app/data

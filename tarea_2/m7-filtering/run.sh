@@ -11,10 +11,10 @@ python3 exportar_mongo.py
 echo ""
 
 # Paso 2: Transformar datos JSON al formato para Pig
-echo "Paso 2: Transformando datos JSON para Pig..."
-echo ""
-python3 transformar_json.py /app/data /app/data_preprocesada
-echo ""
+#echo "Paso 2: Transformando datos JSON para Pig..."
+#echo ""
+#python3 transformar_json.py /app/data /app/data_preprocesada
+#echo ""
 
 # Paso 3: Procesar datos con Apache Pig
 echo "Paso 3: Procesando datos con Apache Pig..."

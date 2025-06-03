@@ -6,7 +6,7 @@ REGISTER '/opt/pig/lib/piggybank.jar';
 -- ============================================================
 
 -- Cargar los datos de alertas desde CSV con delimitador ,
-alertas_raw = LOAD '/app/data_preprocesada/transformed_alerta_*.csv' USING PigStorage(',') AS (
+alertas_raw = LOAD '/app/data/transformed_alerta_*.csv' USING PigStorage(',') AS (
     uuid:chararray, 
     city:chararray, 
     municipalityUser:chararray, 
@@ -33,12 +33,21 @@ alertas_completas = FILTER alertas_sin_encabezado BY
     (location_y IS NOT NULL) AND
     (fecha IS NOT NULL AND fecha != '');
 
+-- Eliminar alertas con UUIDs duplicados (conservar solo la primera aparición)
+alertas_agrupadas = GROUP alertas_completas BY uuid;
+alertas_sin_duplicados = FOREACH alertas_agrupadas {
+    -- Ordenar por fecha y tomar solo el primer registro
+    ordenadas = ORDER alertas_completas BY fecha ASC;
+    primera = LIMIT ordenadas 1;
+    GENERATE FLATTEN(primera);
+};
+
 --
 -- SECCIÓN 2: PROCESAMIENTO DE ATASCOS
 -- 
 
 -- Cargar los datos de atascos desde CSV con delimitador ,
-atascos_raw = LOAD '/app/data_preprocesada/transformed_atasco_*.csv' USING PigStorage(',') AS (
+atascos_raw = LOAD '/app/data/transformed_atasco_*.csv' USING PigStorage(',') AS (
     uuid:chararray, 
     severity:int, 
     country:chararray, 
@@ -69,6 +78,15 @@ atascos_completos = FILTER atascos_sin_encabezado BY
     (region IS NOT NULL AND region != '') AND
     (city IS NOT NULL AND city != '');
 
+-- Eliminar atascos con UUIDs duplicados (conservar solo la primera aparición)
+atascos_agrupados = GROUP atascos_completos BY uuid;
+atascos_sin_duplicados = FOREACH atascos_agrupados {
+    -- Ordenar por fecha y tomar solo el primer registro
+    ordenados = ORDER atascos_completos BY fecha ASC;
+    primero = LIMIT ordenados 1;
+    GENERATE FLATTEN(primero);
+};
+
 -- 
 -- SECCIÓN 3: CREACIÓN DE DIRECTORIOS PARA RESULTADOS
 -- 
@@ -82,11 +100,11 @@ sh chmod -R 777 /app/results;
 -- SECCIÓN 4: ALMACENAMIENTO DE RESULTADOS EN FORMATO CSV
 --
 
--- Almacenar todas las alertas completas en formato CSV con delimitador ,
-STORE alertas_completas INTO '/app/results/alertas_completas/alertas_filtradas' USING PigStorage(',');
+-- Almacenar todas las alertas completas sin duplicados en formato CSV con delimitador ,
+STORE alertas_sin_duplicados INTO '/app/results/alertas_completas/alertas_filtradas' USING PigStorage(',');
 
--- Almacenar todos los atascos completos en formato CSV con delimitador ,
-STORE atascos_completos INTO '/app/results/atascos_completos/atascos_filtrados' USING PigStorage(',');
+-- Almacenar todos los atascos completos sin duplicados en formato CSV con delimitador ,
+STORE atascos_sin_duplicados INTO '/app/results/atascos_completos/atascos_filtrados' USING PigStorage(',');
 
 -- 
 -- SECCIÓN 5: ESCRITURA DE ENCABEZADOS EN ARCHIVOS CSV
@@ -99,3 +117,29 @@ sh cat /app/results/alertas_completas/encabezado.csv /app/results/alertas_comple
 -- Crear encabezados para el archivo de atascos con delimitador ,
 sh echo "uuid,severity,country,length,endnode,roadtype,speed,street,fecha,region,city" > /app/results/atascos_completos/encabezado.csv;
 sh cat /app/results/atascos_completos/encabezado.csv /app/results/atascos_completos/atascos_filtrados/part-* > /app/results/atascos_completos/atascos_completos.csv;
+
+--
+-- SECCIÓN 6: ESTADÍSTICAS DE PROCESAMIENTO
+--
+
+-- Contar registros en cada etapa
+alertas_total = GROUP alertas_sin_encabezado ALL;
+alertas_total_count = FOREACH alertas_total GENERATE COUNT(alertas_sin_encabezado) as count;
+alertas_completas_total = GROUP alertas_completas ALL;
+alertas_completas_count = FOREACH alertas_completas_total GENERATE COUNT(alertas_completas) as count;
+alertas_sin_duplicados_total = GROUP alertas_sin_duplicados ALL;
+alertas_sin_duplicados_count = FOREACH alertas_sin_duplicados_total GENERATE COUNT(alertas_sin_duplicados) as count;
+
+atascos_total = GROUP atascos_sin_encabezado ALL;
+atascos_total_count = FOREACH atascos_total GENERATE COUNT(atascos_sin_encabezado) as count;
+atascos_completos_total = GROUP atascos_completos ALL;
+atascos_completos_count = FOREACH atascos_completos_total GENERATE COUNT(atascos_completos) as count;
+atascos_sin_duplicados_total = GROUP atascos_sin_duplicados ALL;
+atascos_sin_duplicados_count = FOREACH atascos_sin_duplicados_total GENERATE COUNT(atascos_sin_duplicados) as count;
+
+DUMP alertas_total_count;
+DUMP alertas_completas_count;
+DUMP alertas_sin_duplicados_count;
+DUMP atascos_total_count;
+DUMP atascos_completos_count;
+DUMP atascos_sin_duplicados_count;
