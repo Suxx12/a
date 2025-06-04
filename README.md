@@ -32,6 +32,12 @@ docker logs waze-scrapper-general
 docker logs mongodb-general
 docker logs mongo-express-general
 
+# Filtering
+docker logs filtering-general
+
+# Processing
+docker logs processing-general
+
 ```
 
 ### Alternativa 2: Levantar los modulos individualmente.
