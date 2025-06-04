@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# script extra, para graficar los resultados de los CSV generados por el procesamiento de datos con PIG y que se vea mas bonito
+# script para graficar los resultados de los CSV generados por el procesamiento de datos con PIG
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -53,13 +53,27 @@ def crear_grafico(df, tipo, directorio_salida):
         
     elif tipo == 'horas_pico':
         # distribución de alertas por hora
-        df = df.sort_values('hora')
-        plt.plot(df['hora'], df['cantidad_alertas'], marker='o', color='green', linewidth=2)
+        df = df.copy()
+        df['hora_etiqueta'] = df['hora'].fillna('Sin hora')
+        
+        # Convertir a numérico para ordenar
+        def convertir_hora(x):
+            try:
+                if pd.isna(x) or x == '':
+                    return -1
+                return int(x)
+            except (ValueError, TypeError):
+                return -1
+        
+        df['hora_num'] = df['hora'].apply(convertir_hora)
+        df = df.sort_values('hora_num')
+        
+        plt.bar(range(len(df)), df['cantidad_alertas'], color='green')
+        plt.xticks(range(len(df)), df['hora_etiqueta'], rotation=45)
         plt.grid(True, linestyle='--', alpha=0.7)
         plt.title('Distribución de Alertas por Hora del Día', fontsize=16)
         plt.xlabel('Hora', fontsize=14)
         plt.ylabel('Cantidad de Alertas', fontsize=14)
-        plt.xticks(df['hora'])
         
     elif tipo == 'tipos_alerta_frecuencia':
         #frecuencia de tipos de alerta
@@ -92,7 +106,7 @@ def crear_grafico(df, tipo, directorio_salida):
     ruta_salida = os.path.join(directorio_salida, f"{tipo}.png")
     plt.savefig(ruta_salida, dpi=300)
     plt.close()
-    print(f"Gráfico guardado en: {ruta_salida}")
+    print(f"Gráfico {tipo} guardado en: {directorio_salida}")
 
 def main():
     # configuración
@@ -124,49 +138,46 @@ def main():
         print("No se encontraron archivos CSV para analizar.")
         return
     
-    # Mapeo de nombres de archivo a tipos de gráfico
-    tipo_mapa = {
-        'calles_con_mas_accidentes': 'calles_con_mas_accidentes',
-        'calles_con_mas_alertas': 'calles_con_mas_alertas',
-        'comunas_con_mas_accidentes': 'comunas_con_mas_accidentes',
-        'comunas_con_mas_alertas': 'comunas_con_mas_alertas',
-        'horas_pico': 'horas_pico',
-        'tipos_alerta_frecuencia': 'tipos_alerta_frecuencia'
-    }
-    
     # Procesar cada archivo CSV
     for archivo in archivos_csv:
         try:
             nombre_base = Path(archivo).stem.lower()
             
+            # Caso especial para archivo horas_pico.csv
+            if 'horas_pico' in nombre_base:
+                df = pd.read_csv(archivo)
+                crear_grafico(df, 'horas_pico', directorio_graficos)
+                continue
+                
             # Caso especial para atascos_por_ciudad
             if 'atascos_por_ciudad' in nombre_base:
-                print(f"Procesando {archivo} como atascos_por_ciudad")
                 df = pd.read_csv(archivo)
-                
-                # Generar dos gráficos para este archivo
                 crear_grafico(df, 'atascos_por_ciudad_largo', directorio_graficos)
                 crear_grafico(df, 'atascos_por_ciudad_numero', directorio_graficos)
                 continue
             
-            # Determinar el tipo de gráfico a generar (para otros archivos)
-            tipo_grafico = None
-            for clave, valor in tipo_mapa.items():
-                if clave in nombre_base:
-                    tipo_grafico = valor
-                    break
-            
-            if tipo_grafico:
-                print(f"Procesando {archivo} como {tipo_grafico}")
-                df = pd.read_csv(archivo)
-                crear_grafico(df, tipo_grafico, directorio_graficos)
+            # Para otros tipos de archivos
+            if 'calles_con_mas_accidentes' in nombre_base:
+                tipo_grafico = 'calles_con_mas_accidentes'
+            elif 'calles_con_mas_alertas' in nombre_base:
+                tipo_grafico = 'calles_con_mas_alertas'
+            elif 'comunas_con_mas_accidentes' in nombre_base:
+                tipo_grafico = 'comunas_con_mas_accidentes'
+            elif 'comunas_con_mas_alertas' in nombre_base:
+                tipo_grafico = 'comunas_con_mas_alertas'
+            elif 'tipos_alerta_frecuencia' in nombre_base:
+                tipo_grafico = 'tipos_alerta_frecuencia'
             else:
                 print(f"No se reconoce el tipo de archivo: {nombre_base}")
+                continue
+            
+            df = pd.read_csv(archivo)
+            crear_grafico(df, tipo_grafico, directorio_graficos)
                 
         except Exception as e:
             print(f"Error al procesar {archivo}: {e}")
     
-    print(f"Se han generado gráficos en: {directorio_graficos}")
+    print(f"Se han generado todos los gráficos en: {directorio_graficos}")
 
 if __name__ == "__main__":
     main()

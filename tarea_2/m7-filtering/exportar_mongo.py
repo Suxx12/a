@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# filepath: /home/renato/proyectos_universidad/sistemas_distribuidos/tarea_2/m7-filtering/exportar_mongo.py
 import os
 import csv
 import pymongo

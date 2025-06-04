@@ -1,5 +1,5 @@
 #!/bin/bash
-# filepath: /home/renato/proyectos_universidad/sistemas_distribuidos/tarea_2/m7-filtering/run.sh
+# 
 
 echo "=== Iniciando proceso de análisis de datos de tráfico ==="
 echo ""

@@ -41,8 +41,8 @@ COPY exportar_mongo.py .
 COPY filtrar_data.pig .
 COPY run.sh .
 # Copiar el script de transformación de JSON
-COPY transformar_json.py .
-RUN chmod +x transformar_json.py
+#COPY transformar_json.py .
+#RUN chmod +x transformar_json.py
 
 # Crear directorio para datos transformados
 #RUN mkdir -p /app/data_preprocesada

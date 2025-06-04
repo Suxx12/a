@@ -1,5 +1,5 @@
 #!/bin/bash
-# filepath: /home/renato/proyectos_universidad/sistemas_distribuidos/tarea_2/m8-processing/run.sh
+
 
 echo "Iniciando procesamiento de datos..."
 

@@ -1,11 +1,11 @@
 services: 
-  #scrapper:
-   # build: ./m1_scrapper   # Esto entra a la carpeta scrapper y buildea el Dockerfile que esta adentro
-    #container_name: waze-scrapper-general
-    #volumes:
-    #  - ./m1_scrapper/jsons:/app/jsons   # Esto mapea la carpeta datos del host a la carpeta /app/jsons dentro del contenedor
-    #depends_on:
-     # - mongo # Se usa el nombre del servicio
+  scrapper:
+    build: ./m1_scrapper   # Esto entra a la carpeta scrapper y buildea el Dockerfile que esta adentro
+    container_name: waze-scrapper-general
+    volumes:
+      - ./m1_scrapper/jsons:/app/jsons   # Esto mapea la carpeta datos del host a la carpeta /app/jsons dentro del contenedor
+    depends_on:
+      - mongo # Se usa el nombre del servicio
 
   mongo: #Servidor de base de datos
     image: mongo:latest
@@ -112,14 +112,14 @@ services:
       - MONGODB_COLECCION_ALERTAS=alertas
       - MONGODB_COLECCION_ATASCOS=atascos
     depends_on:
-      #json_loader:
-      #  condition: service_completed_successfully
-      #scrapper:
-      #  condition: service_completed_successfully
+      json_loader:
+        condition: service_completed_successfully
+      scrapper:
+        condition: service_completed_successfully
       mongo:
         condition: service_started
 
-  # Add the m8-processing service
+ 
   processing:
     build: ./m8-processing
     container_name: m8-processing-general
