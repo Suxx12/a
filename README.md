@@ -50,8 +50,4 @@ docker compose up --build -d
 1. `m2_almacenamiento`
 2. `m1_scrapper`
 3. `m7-filtering`
-4. `m8-processing`
-6. `m5-generador-trafico (Normal o Zipf)` 
-
-
-Y finalmente los modulos de visualización de datos.
+4. `m8-processing`.
