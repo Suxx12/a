@@ -1,15 +1,18 @@
 -- Registrar PiggyBank (para poder usar funciones adicionales)
 REGISTER '/opt/pig/lib/piggybank.jar';
 
--- Obtener timestamp para los nombres de archivo (formato YYYYMMDD_HHMMSS)
+-- Encontrar el directorio de ejecución más reciente para entrada
+%declare latest_dir `ls -td /app/input/ejecucion_* | head -1`
 %declare timestamp `date +%Y%m%d_%H%M%S`
 %declare output_dir '/app/results/ejecucion_$timestamp'
 
 -- Crear directorio para la ejecución actual
 sh mkdir -p $output_dir;
+sh echo "Usando datos de entrada de: $latest_dir";
+sh echo "Guardando resultados en: $output_dir";
 
 -- Cargar datos de alertas
-alertas = LOAD '/app/input/alertas_completas/alertas_completas.csv' USING PigStorage(',') AS (
+alertas = LOAD '$latest_dir/alertas_completas/alertas_completas.csv' USING PigStorage(',') AS (
     uuid:chararray,
     city:chararray,
     municipalityUser:chararray,
@@ -22,7 +25,7 @@ alertas = LOAD '/app/input/alertas_completas/alertas_completas.csv' USING PigSto
 );
 
 -- Cargar datos de atascos
-atascos = LOAD '/app/input/atascos_completos/atascos_completos.csv' USING PigStorage(',') AS (
+atascos = LOAD '$latest_dir/atascos_completos/atascos_completos.csv' USING PigStorage(',') AS (
     uuid:chararray,
     severity:int,
     country:chararray,

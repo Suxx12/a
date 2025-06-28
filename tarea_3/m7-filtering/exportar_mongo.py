@@ -26,13 +26,19 @@ def main():
     client = pymongo.MongoClient(mongo_uri)
     db = client[mongo_db]
     
-    # Timestamp para archivos únicos 
+    # Timestamp para archivos únicos y para el nombre de la carpeta
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     output_dir = "/app/data"
+    
+    # Crear directorio base
     os.makedirs(output_dir, exist_ok=True)
     
+    # Crear directorio específico para esta ejecución
+    execution_dir = os.path.join(output_dir, f"ejecucion_{timestamp}")
+    os.makedirs(execution_dir, exist_ok=True)
+    
     # Exportar alertas
-    alertas_file = f"{output_dir}/transformed_alerta_alertas_{timestamp}.csv"
+    alertas_file = f"{execution_dir}/transformed_alerta_alertas_{timestamp}.csv"
     campos_alertas = [
         "uuid", "city", "municipalityUser", "type", 
         "street", "confidence", "location_x", "location_y", "fecha"
@@ -65,7 +71,7 @@ def main():
     print(f"Exportadas {alertas_count} alertas")
     
     # Exportar atascos
-    atascos_file = f"{output_dir}/transformed_atasco_atascos_{timestamp}.csv"
+    atascos_file = f"{execution_dir}/transformed_atasco_atascos_{timestamp}.csv"
     campos_atascos = [
         "uuid", "severity", "country", "length", "endnode", "roadtype", 
         "speed", "street", "fecha", "region", "city"
@@ -98,7 +104,7 @@ def main():
             atascos_count += 1
     
     print(f"Exportados {atascos_count} atascos")
-    print("Exportación completada.")
+    print(f"Exportación completada en: {execution_dir}")
 
 if __name__ == "__main__":
     main()

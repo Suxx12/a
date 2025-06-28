@@ -41,15 +41,12 @@ services:
   #    - ./m3-cache/redis.conf:/usr/local/etc/redis/redis.conf
   #  command: [sh, -c, "rm -f /data/dump.rdb && redis-server /usr/local/etc/redis/redis.conf"] #Elimina persistencia lee archivo de configuracion para tamaño maximo y politica de remocion
 
-
   #redis_insight:
    # image: redislabs/redisinsight:1.14.0
    # container_name: redis_insight_general
    # restart: always
    # ports:
    #   - 8001:8001
-
-  
 
   # Servicio para cargar archivos JSON a MongoDB
   json_loader:
@@ -85,7 +82,6 @@ services:
       mongo:
         condition: service_started
 
- 
   processing:
     build: ./m8-processing
     container_name: m8-processing-general
@@ -96,7 +92,6 @@ services:
       filtering:
         condition: service_completed_successfully
 
-
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.4
     container_name: elasticsearch
@@ -105,6 +100,7 @@ services:
       - xpack.security.enabled=false
     ports:
       - "9200:9200"
+  
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.13.4
@@ -121,16 +117,13 @@ services:
     build: ./m9-load-transformed-data
     container_name: m9-load-transformed-data-general
     depends_on:
-      elasticsearch:
-        condition: service_healthy
+      # elasticsearch:
+      #   condition: service_healthy  # Comentado temporalmente para evitar error por contenedor unhealthy
       processing:
         condition: service_completed_successfully
 
-
 #Aca no es necesario definir una red comun para todos los contenedores
 #porque con docker compose esta red se crea de forma automatica "directorio_default"
-
-#
 
 #networks:
  # app-network:
@@ -138,4 +131,3 @@ services:
 
 volumes:
   mongo_data:
-    

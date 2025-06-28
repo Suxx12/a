@@ -1,12 +1,22 @@
 -- Registrar bibliotecas necesarias
 REGISTER '/opt/pig/lib/piggybank.jar';
 
+-- Encontrar el directorio de ejecución más reciente
+%declare CURRENT_TIMESTAMP `date +%Y%m%d_%H%M%S`
+%declare LATEST_DIR `ls -td /app/data/ejecucion_* | head -1`
+%declare OUTPUT_DIR '/app/results/ejecucion_$CURRENT_TIMESTAMP'
+
+-- Crear directorio para resultados con timestamp actual
+sh mkdir -p $OUTPUT_DIR/alertas_completas;
+sh mkdir -p $OUTPUT_DIR/atascos_completos;
+sh chmod -R 777 $OUTPUT_DIR;
+
 -- ============================================================
 -- SECCIÓN 1: PROCESAMIENTO DE ALERTAS
 -- ============================================================
 
 -- Cargar los datos de alertas desde CSV con delimitador ,
-alertas_raw = LOAD '/app/data/transformed_alerta_*.csv' USING PigStorage(',') AS (
+alertas_raw = LOAD '$LATEST_DIR/transformed_alerta_*.csv' USING PigStorage(',') AS (
     uuid:chararray, 
     city:chararray, 
     municipalityUser:chararray, 
@@ -47,7 +57,7 @@ alertas_sin_duplicados = FOREACH alertas_agrupadas {
 -- 
 
 -- Cargar los datos de atascos desde CSV con delimitador ,
-atascos_raw = LOAD '/app/data/transformed_atasco_*.csv' USING PigStorage(',') AS (
+atascos_raw = LOAD '$LATEST_DIR/transformed_atasco_*.csv' USING PigStorage(',') AS (
     uuid:chararray, 
     severity:int, 
     country:chararray, 
@@ -88,35 +98,26 @@ atascos_sin_duplicados = FOREACH atascos_agrupados {
 };
 
 -- 
--- SECCIÓN 3: CREACIÓN DE DIRECTORIOS PARA RESULTADOS
--- 
-
--- Crear directorio para resultados
-sh mkdir -p /app/results/alertas_completas;
-sh mkdir -p /app/results/atascos_completos;
-sh chmod -R 777 /app/results;
-
--- 
 -- SECCIÓN 4: ALMACENAMIENTO DE RESULTADOS EN FORMATO CSV
 --
 
 -- Almacenar todas las alertas completas sin duplicados en formato CSV con delimitador ,
-STORE alertas_sin_duplicados INTO '/app/results/alertas_completas/alertas_filtradas' USING PigStorage(',');
+STORE alertas_sin_duplicados INTO '$OUTPUT_DIR/alertas_completas/alertas_filtradas' USING PigStorage(',');
 
 -- Almacenar todos los atascos completos sin duplicados en formato CSV con delimitador ,
-STORE atascos_sin_duplicados INTO '/app/results/atascos_completos/atascos_filtrados' USING PigStorage(',');
+STORE atascos_sin_duplicados INTO '$OUTPUT_DIR/atascos_completos/atascos_filtrados' USING PigStorage(',');
 
 -- 
 -- SECCIÓN 5: ESCRITURA DE ENCABEZADOS EN ARCHIVOS CSV
 --
 
 -- Crear encabezados para el archivo de alertas (sin reportedBy ni subtype) con delimitador ,
-sh echo "uuid,city,municipalityUser,type,street,confidence,location_x,location_y,fecha" > /app/results/alertas_completas/encabezado.csv;
-sh cat /app/results/alertas_completas/encabezado.csv /app/results/alertas_completas/alertas_filtradas/part-* > /app/results/alertas_completas/alertas_completas.csv;
+sh echo "uuid,city,municipalityUser,type,street,confidence,location_x,location_y,fecha" > $OUTPUT_DIR/alertas_completas/encabezado.csv;
+sh cat $OUTPUT_DIR/alertas_completas/encabezado.csv $OUTPUT_DIR/alertas_completas/alertas_filtradas/part-* > $OUTPUT_DIR/alertas_completas/alertas_completas.csv;
 
 -- Crear encabezados para el archivo de atascos con delimitador ,
-sh echo "uuid,severity,country,length,endnode,roadtype,speed,street,fecha,region,city" > /app/results/atascos_completos/encabezado.csv;
-sh cat /app/results/atascos_completos/encabezado.csv /app/results/atascos_completos/atascos_filtrados/part-* > /app/results/atascos_completos/atascos_completos.csv;
+sh echo "uuid,severity,country,length,endnode,roadtype,speed,street,fecha,region,city" > $OUTPUT_DIR/atascos_completos/encabezado.csv;
+sh cat $OUTPUT_DIR/atascos_completos/encabezado.csv $OUTPUT_DIR/atascos_completos/atascos_filtrados/part-* > $OUTPUT_DIR/atascos_completos/atascos_completos.csv;
 
 --
 -- SECCIÓN 6: ESTADÍSTICAS DE PROCESAMIENTO
@@ -136,6 +137,10 @@ atascos_completos_total = GROUP atascos_completos ALL;
 atascos_completos_count = FOREACH atascos_completos_total GENERATE COUNT(atascos_completos) as count;
 atascos_sin_duplicados_total = GROUP atascos_sin_duplicados ALL;
 atascos_sin_duplicados_count = FOREACH atascos_sin_duplicados_total GENERATE COUNT(atascos_sin_duplicados) as count;
+
+-- Mostrar información de directorios usados
+sh echo "Usando datos de: $LATEST_DIR";
+sh echo "Guardando resultados en: $OUTPUT_DIR";
 
 DUMP alertas_total_count;
 DUMP alertas_completas_count;
