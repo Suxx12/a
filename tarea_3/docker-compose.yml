@@ -116,6 +116,8 @@ services:
   uploader:
     build: ./m9-load-transformed-data
     container_name: m9-load-transformed-data-general
+    volumes:
+      - ./m8-processing/results:/app/input  # Linkear volumen m8 para que pueda acceder a los CSV
     depends_on:
       # elasticsearch:
       #   condition: service_healthy  # Comentado temporalmente para evitar error por contenedor unhealthy
